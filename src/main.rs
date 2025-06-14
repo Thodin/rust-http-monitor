@@ -1,8 +1,10 @@
 use std::time::Duration;
 
+use config::Config;
 use executor::Executor;
 use monitorable::{DurationMonitorable, Monitorable, StatusMonitorable};
 
+mod config;
 mod executor;
 mod monitorable;
 mod monitoring_result;
@@ -17,10 +19,11 @@ async fn main() -> anyhow::Result<()> {
             Duration::from_millis(100),
         )),
     ];
+    let config = Config { monitorables };
 
     let cycle_time = Duration::from_secs(5);
 
-    let executor = Executor::new(monitorables, cycle_time);
+    let executor = Executor::new(config, cycle_time);
     executor.run().await?;
 
     Ok(())

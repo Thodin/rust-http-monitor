@@ -5,7 +5,7 @@ use std::{
 
 use tokio::{select, task::JoinSet};
 
-use crate::{monitorable::Monitorable, monitoring_result::MonitoringResult};
+use crate::{config::Config, monitorable::Monitorable, monitoring_result::MonitoringResult};
 
 pub struct Executor {
     monitorables: Vec<Arc<Monitorable>>,
@@ -13,8 +13,8 @@ pub struct Executor {
 }
 
 impl Executor {
-    pub fn new(monitorables: Vec<Monitorable>, cycle_time: Duration) -> Self {
-        let monitorables = monitorables.into_iter().map(Arc::new).collect();
+    pub fn new(config: Config, cycle_time: Duration) -> Self {
+        let monitorables = config.monitorables.into_iter().map(Arc::new).collect();
 
         Self {
             monitorables,
