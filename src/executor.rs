@@ -13,12 +13,12 @@ pub struct Executor {
 }
 
 impl Executor {
-    pub fn new(config: Config, cycle_time: Duration) -> Self {
+    pub fn new(config: Config) -> Self {
         let monitorables = config.monitorables.into_iter().map(Arc::new).collect();
 
         Self {
             monitorables,
-            cycle_time,
+            cycle_time: config.cycle_time,
         }
     }
 

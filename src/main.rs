@@ -18,12 +18,14 @@ async fn main() -> anyhow::Result<()> {
     let monitorables: Vec<Monitorable> =
         serde_json::from_reader(file).context("Parsing monitorables from json")?;
 
-    let config = Config { monitorables };
-
     let cycle_time = Duration::from_secs(5);
+    let config = Config {
+        monitorables,
+        cycle_time,
+    };
 
     // Create and run the executor.
-    let executor = Executor::new(config, cycle_time);
+    let executor = Executor::new(config);
     executor.run().await?;
 
     Ok(())
