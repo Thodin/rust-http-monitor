@@ -1,0 +1,23 @@
+[
+  {
+    "Status": {
+      "url": "https://docs.rs",
+      "expected_status": 200
+    }
+  },
+  {
+    "Status": {
+      "url": "https://google.com",
+      "expected_status": 200
+    }
+  },
+  {
+    "Duration": {
+      "url": "https://google.de",
+      "max_duration": {
+        "secs": 0,
+        "nanos": 100000000
+      }
+    }
+  }
+]

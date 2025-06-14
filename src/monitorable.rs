@@ -1,8 +1,9 @@
 use std::time::Duration;
 
 use reqwest::Response;
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum Monitorable {
     Status(StatusMonitorable),
     Duration(DurationMonitorable),
@@ -28,32 +29,14 @@ impl Monitorable {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct StatusMonitorable {
     url: String,
     expected_status: u16,
 }
 
-impl StatusMonitorable {
-    pub fn new(url: impl Into<String>, expected_status: u16) -> Self {
-        Self {
-            url: url.into(),
-            expected_status,
-        }
-    }
-}
-
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DurationMonitorable {
     url: String,
     max_duration: Duration,
-}
-
-impl DurationMonitorable {
-    pub fn new(url: impl Into<String>, max_duration: Duration) -> Self {
-        Self {
-            url: url.into(),
-            max_duration,
-        }
-    }
 }
