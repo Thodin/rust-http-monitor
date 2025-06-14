@@ -1,4 +1,4 @@
-use std::{sync::Arc, time::Duration};
+use std::time::Duration;
 
 use executor::Executor;
 use monitorable::{DurationMonitorable, Monitorable, StatusMonitorable};
@@ -9,25 +9,14 @@ mod monitoring_result;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    let status_monitorables = vec![
-        StatusMonitorable::new("https://docs.rs", 200),
-        StatusMonitorable::new("https://google.com", 200),
+    let monitorables = vec![
+        Monitorable::Status(StatusMonitorable::new("https://docs.rs", 200)),
+        Monitorable::Status(StatusMonitorable::new("https://google.com", 200)),
+        Monitorable::Duration(DurationMonitorable::new(
+            "https://google.de",
+            Duration::from_millis(100),
+        )),
     ];
-    let duration_monitorables = vec![DurationMonitorable::new(
-        "https://google.de",
-        Duration::from_millis(100),
-    )];
-    let mut monitorables: Vec<_> = status_monitorables
-        .into_iter()
-        .map(|m| Arc::new(m) as Arc<dyn Monitorable>)
-        .collect();
-
-    let duration_monitorables: Vec<_> = duration_monitorables
-        .into_iter()
-        .map(|m| Arc::new(m) as Arc<dyn Monitorable>)
-        .collect();
-
-    monitorables.extend(duration_monitorables);
 
     let cycle_time = Duration::from_secs(5);
 

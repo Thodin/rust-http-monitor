@@ -8,12 +8,14 @@ use tokio::{select, task::JoinSet};
 use crate::{monitorable::Monitorable, monitoring_result::MonitoringResult};
 
 pub struct Executor {
-    monitorables: Vec<Arc<dyn Monitorable>>,
+    monitorables: Vec<Arc<Monitorable>>,
     cycle_time: Duration,
 }
 
 impl Executor {
-    pub fn new(monitorables: Vec<Arc<dyn Monitorable>>, cycle_time: Duration) -> Self {
+    pub fn new(monitorables: Vec<Monitorable>, cycle_time: Duration) -> Self {
+        let monitorables = monitorables.into_iter().map(Arc::new).collect();
+
         Self {
             monitorables,
             cycle_time,
@@ -37,7 +39,7 @@ impl Executor {
 }
 
 async fn monitor(
-    monitorable: Arc<dyn Monitorable>,
+    monitorable: Arc<Monitorable>,
     timeout: Duration,
 ) -> anyhow::Result<MonitoringResult> {
     let timeout_task = tokio::time::sleep(timeout);

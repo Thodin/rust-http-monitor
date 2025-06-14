@@ -5,6 +5,6 @@ use crate::monitorable::Monitorable;
 #[derive(Debug, Clone)]
 pub struct MonitoringResult {
     pub success: bool,
-    pub monitorable: Arc<dyn Monitorable>,
+    pub monitorable: Arc<Monitorable>,
     pub duration: Duration,
 }
